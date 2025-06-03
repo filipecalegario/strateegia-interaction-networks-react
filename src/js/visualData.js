@@ -5,8 +5,6 @@ import {
     buildGraph,
     initializeSimulation,
     updateAll,
-    saveJson,
-    saveAsSVG,
 } from "./visualProjects.js";
 
 const access_token = localStorage.getItem("strateegiaAccessToken");
@@ -171,7 +169,6 @@ async function drawProject(projectId, s_mode) {
         links: [],
     };
 
-    let promisses = [];
 
     const selected_mode = s_mode;
 
@@ -307,7 +304,7 @@ function filterArray(array, filters) {
 function applyFilters(inputData) {
     console.log("applyFilters list of filters %o", filters);
     console.log("applyFilters inputData %o", inputData);
-    const otherData = {
+    const _otherData = {
         nodes: [...inputData.nodes],
         links: [...inputData.links],
     };
@@ -362,7 +359,7 @@ function filterByTime(inputDate) {
 
 function countStatistics(input_data) {
     const selected_mode = global_selected_mode;
-    counter.forEach(function (d, i) {
+    counter.forEach(function (d, _i) {
         d.quant = 0;
     });
     for (let i = 0; i < input_data.nodes.length; i++) {

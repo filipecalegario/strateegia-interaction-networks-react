@@ -12,7 +12,7 @@ export function initializeLogin() {
     const btnLogin = document.getElementById("btnLogin");
 
     if (btnLogin) {
-        btnLogin.addEventListener("click", (e) => {
+        btnLogin.addEventListener("click", (_event) => {
             console.log("btnLogin clicked");
             const usernameElement = document.getElementById("username");
             const passwordElement = document.getElementById("password");

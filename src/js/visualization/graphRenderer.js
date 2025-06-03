@@ -3,7 +3,7 @@
  * Handles graph visualization and rendering
  */
 
-import { NODE_GROUPS, NODE_COLORS, NODE_SIZES, SIMULATION_CONFIG, DEFAULT_FORCE_PROPERTIES } from "../core/config.js";
+import { NODE_GROUPS, NODE_COLORS, NODE_SIZES, SIMULATION_CONFIG, DEFAULT_FORCE_PROPERTIES, PROJECT_MODE } from "../core/config.js";
 
 // SVG and dimensions
 let svg, g, width, height;
@@ -36,9 +36,12 @@ export function initializeRenderer(svgSelector, containerSelector) {
 
     // Get dimensions from container
     const container = d3.select(containerSelector);
-    const containerRect = container.node().getBoundingClientRect();
+    let containerRect = container.node().getBoundingClientRect();
+    if (containerRect.width === 0) {
+        containerRect = container.node().parentNode.getBoundingClientRect();
+    }
     width = containerRect.width;
-    height = 1000; // Fixed height or calculate based on needs
+    height = containerRect.height || 1000;
 
     // Set SVG dimensions
     svg.style("width", width + "px")
@@ -58,9 +61,15 @@ export function initializeRenderer(svgSelector, containerSelector) {
 
     // Handle window resize
     d3.select(window).on("resize", () => {
-        const containerRect = container.node().getBoundingClientRect();
-        width = containerRect.width;
-        height = containerRect.height;
+        let rect = container.node().getBoundingClientRect();
+        if (rect.width === 0) {
+            rect = container.node().parentNode.getBoundingClientRect();
+        }
+        width = rect.width;
+        height = rect.height || height;
+        svg.style("width", width + "px")
+            .style("height", height + "px")
+            .attr("viewBox", [0, 0, width, height]);
     });
 }
 
@@ -503,7 +512,7 @@ function ticked() {
  * @param {Array} links - The links data
  * @param {string} mode - The visualization mode
  */
-export function buildGraph(nodes, links, mode = MODE_PROJECT) {
+export function buildGraph(nodes, links, mode = PROJECT_MODE) {
     // Validate input parameters
     if (!nodes || !Array.isArray(nodes)) {
         console.error("Invalid nodes data provided to buildGraph");
@@ -784,13 +793,13 @@ export function saveAsSVG() {
     var source = serializer.serializeToString(svgElement);
 
     // Add name spaces
-    if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+    if (!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)) {
         source = source.replace(
             /^<svg/,
             '<svg xmlns="http://www.w3.org/2000/svg"'
         );
     }
-    if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+    if (!source.match(/^<svg[^>]+"http:\/\/www\.w3\.org\/1999\/xlink"/)) {
         source = source.replace(
             /^<svg/,
             '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'

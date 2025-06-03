@@ -5,7 +5,6 @@ let width = widthProjectChooser.width;
 let height = 1000;
 const g = svg.append("g");
 // g.append("rect").attr("width", 2).attr("height", 2).attr("fill", "black");
-let toggle = false;
 
 // Performance optimization variables
 let isSimulationStabilizing = false;
@@ -602,7 +601,7 @@ function focus(event, d) {
         });
 }
 
-function unfocus(d) {
+function unfocus(_d) {
     d3.selectAll("g.nodes").selectAll("text").style("display", "none");
 }
 
@@ -631,13 +630,13 @@ export function saveAsSVG() {
     var source = serializer.serializeToString(svg);
 
     //add name spaces.
-    if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+    if (!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)) {
         source = source.replace(
             /^<svg/,
             '<svg xmlns="http://www.w3.org/2000/svg"'
         );
     }
-    if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+    if (!source.match(/^<svg[^>]+"http:\/\/www\.w3\.org\/1999\/xlink"/)) {
         source = source.replace(
             /^<svg/,
             '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'

@@ -1,5 +1,5 @@
 // Ref: https://stackoverflow.com/questions/15547198/export-html-table-to-csv-using-vanilla-javascript
-function exportTableAsCsv(table_id, separator = ',') {
+function ExportTableAsCsv(table_id, separator = ',') {
   // Select rows from table_id
   let rows = document.querySelectorAll('table#' + table_id + ' tr');
   // Construct csv
@@ -29,7 +29,7 @@ function exportTableAsCsv(table_id, separator = ',') {
   document.body.removeChild(link);
 }
 
-function exportSvg(svgId) {
+function ExportSvg(svgId) {
   //get svg element.
   let svg = document.getElementById(svgId);
 
@@ -38,10 +38,10 @@ function exportSvg(svgId) {
   let source = serializer.serializeToString(svg);
 
   //add name spaces.
-  if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+  if (!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)) {
     source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
   }
-  if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+  if (!source.match(/^<svg[^>]+"http:\/\/www\.w3\.org\/1999\/xlink"/)) {
     source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
   }
 
@@ -65,7 +65,7 @@ function exportSvg(svgId) {
   //you can download svg file by right click menu.
 }
 
-function exportJson(dataElement) {
+function ExportJson(dataElement) {
   let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataElement));
   let link = document.createElement('a');
   link.style.display = 'none';

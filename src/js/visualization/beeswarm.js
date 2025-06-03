@@ -1,4 +1,3 @@
-import { gatherMockupGraphData2 } from '../data/mockupGraphData.js';
 import { NODE_GROUPS, NODE_COLORS } from '../core/config.js';
 // Execute when DOM is fully loaded 
 // document.addEventListener('DOMContentLoaded', async () => {
@@ -23,7 +22,7 @@ export async function initBeeswarm(data) {
     const colorGroup = d3.scaleOrdinal().domain(categorias).range(colors);
 
     // Seleciona e configura o SVG
-    const svg = d3.select("#beeswarm_svg")
+    const _svg = d3.select("#beeswarm_svg")
         .selectAll("*").remove() // Limpa conteúdos anteriores
         .exit().select(function () { return this; }); // Garante que continuamos com a seleção correta
 
