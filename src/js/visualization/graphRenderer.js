@@ -36,9 +36,12 @@ export function initializeRenderer(svgSelector, containerSelector) {
 
     // Get dimensions from container
     const container = d3.select(containerSelector);
-    const containerRect = container.node().getBoundingClientRect();
+    let containerRect = container.node().getBoundingClientRect();
+    if (containerRect.width === 0) {
+        containerRect = container.node().parentNode.getBoundingClientRect();
+    }
     width = containerRect.width;
-    height = 1000; // Fixed height or calculate based on needs
+    height = containerRect.height || 1000;
 
     // Set SVG dimensions
     svg.style("width", width + "px")
@@ -58,9 +61,15 @@ export function initializeRenderer(svgSelector, containerSelector) {
 
     // Handle window resize
     d3.select(window).on("resize", () => {
-        const containerRect = container.node().getBoundingClientRect();
-        width = containerRect.width;
-        height = containerRect.height;
+        let rect = container.node().getBoundingClientRect();
+        if (rect.width === 0) {
+            rect = container.node().parentNode.getBoundingClientRect();
+        }
+        width = rect.width;
+        height = rect.height || height;
+        svg.style("width", width + "px")
+            .style("height", height + "px")
+            .attr("viewBox", [0, 0, width, height]);
     });
 }
 

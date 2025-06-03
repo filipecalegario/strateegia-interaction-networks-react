@@ -3,7 +3,7 @@
  * Handles data operations, filtering, and processing
  */
 
-import { getFiltersByMode } from "../core/config.js";
+import { getFiltersByMode, NODE_GROUPS, DEFAULT_MODE } from "../core/config.js";
 
 // Main data storage
 let graphData = {
@@ -15,6 +15,9 @@ let filteredData = {
     nodes: [],
     links: []
 };
+
+// Groups currently selected for filtering
+let selectedGroups = NODE_GROUPS.slice();
 
 /**
  * Set the graph data
@@ -39,6 +42,28 @@ export function getGraphData() {
  */
 export function getFilteredData() {
     return filteredData;
+}
+
+/**
+ * Update group filter combining mode filter and selected groups
+ */
+function updateGroupFilter() {
+    const mode = localStorage.getItem("selectedMode") || DEFAULT_MODE;
+    const modeFilterObj = getFiltersByMode(mode);
+    const modeFilter = modeFilterObj.group;
+    currentFilters.group = (group) => {
+        const modeOk = modeFilter ? modeFilter(group) : true;
+        return modeOk && selectedGroups.includes(group);
+    };
+}
+
+/**
+ * Set groups selected by user
+ * @param {Array} groups
+ */
+export function setSelectedNodeGroups(groups) {
+    selectedGroups = groups.slice();
+    updateGroupFilter();
 }
 
 /**
@@ -172,6 +197,7 @@ export function getFilters() {
 export function initializeFilters(mode) {
     console.log("initializeFilters mode %o", mode);
     setFilters(getFiltersByMode(mode));
+    updateGroupFilter();
 }
 
 /**

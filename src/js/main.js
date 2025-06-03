@@ -3,11 +3,11 @@
  * Entry point for the application
  */
 
-import { USER_MODE, PROJECT_MODE, INDICATORS_MODE, BEESWARM_MODE, DEFAULT_MODE } from "./core/config.js";
+import { USER_MODE, PROJECT_MODE, INDICATORS_MODE, BEESWARM_MODE, DEFAULT_MODE, NODE_GROUPS } from "./core/config.js";
 import { initializeRenderer } from "./visualization/graphRenderer.js";
-import { initializeUI, initializeProjectList, initializeModeSelector, initializePeriodicCheckButtonControls } from "./ui/uiManager.js";
+import { initializeUI, initializeProjectList, initializeModeSelector, initializePeriodicCheckButtonControls, initializeColorSelector } from "./ui/uiManager.js";
 import { getProjects, drawProject, updateGraph } from "./core/projectManager.js";
-import { applyFilters } from "./data/dataManager.js";
+import { applyFilters, setSelectedNodeGroups, getFilters } from "./data/dataManager.js";
 import { startPeriodicCheck, stopPeriodicCheck, getPeriodicCheckStatus } from "./core/periodicCheck.js";
 import { checkAuthentication } from "./core/auth.js";
 
@@ -35,7 +35,7 @@ export async function initializeApp() {
     const accessToken = localStorage.getItem("strateegiaAccessToken");
 
     // Initialize renderer
-    initializeRenderer("svg#main_svg", "#project-chooser");
+    initializeRenderer("svg#main_svg", "#graph-view");
 
     // Initialize UI
     initializeUI();
@@ -68,6 +68,13 @@ export async function initializeApp() {
         localStorage.setItem("selectedMode", selectedMode);
         const selectedProject = localStorage.getItem("selectedProject");
         drawProject(accessToken, selectedProject, selectedMode);
+    });
+
+    // Initialize color selector
+    initializeColorSelector(NODE_GROUPS, (groups) => {
+        setSelectedNodeGroups(groups);
+        const filtered = applyFilters(getFilters());
+        updateGraph(filtered);
     });
 
     // Draw initial project

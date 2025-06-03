@@ -3,7 +3,7 @@
  * Handles UI interactions and display
  */
 
-import { USER_MODE, PROJECT_MODE, INDICATORS_MODE, BEESWARM_MODE } from "../core/config.js";
+import { USER_MODE, PROJECT_MODE, INDICATORS_MODE, BEESWARM_MODE, NODE_GROUPS, NODE_COLORS } from "../core/config.js";
 import { filterByTime, getFilters } from "../data/dataManager.js";
 import { calculateIndicators } from "../data/statisticsManager.js";
 import { saveAsSVG } from "../visualization/graphRenderer.js";
@@ -20,6 +20,7 @@ export function initializeUI() {
 
     // Initialize export buttons
     initializeExportButtons();
+
 }
 
 /**
@@ -219,6 +220,41 @@ export function initializeModeSelector(modes, onModeChange) {
         .append("option")
         .attr("value", (d) => d)
         .text((d) => d);
+}
+
+/**
+ * Initialize node color selector
+ * @param {Array} groups - node group names
+ * @param {Function} onChange - callback when selection changes
+ */
+export function initializeColorSelector(groups, onChange) {
+    const container = d3.select("#color-options");
+    const items = container.selectAll("div.color-option")
+        .data(groups)
+        .enter()
+        .append("div")
+        .attr("class", "form-check form-check-inline me-2 color-option");
+
+    items.append("input")
+        .attr("class", "form-check-input")
+        .attr("type", "checkbox")
+        .attr("id", d => `color-${d}`)
+        .property("checked", true)
+        .on("change", () => {
+            const selected = [];
+            container.selectAll("input").each(function (d) {
+                if (d3.select(this).property("checked")) {
+                    selected.push(d);
+                }
+            });
+            onChange(selected);
+        });
+
+    items.append("label")
+        .attr("class", "form-check-label")
+        .attr("for", d => `color-${d}`)
+        .style("color", (d, i) => NODE_COLORS[i])
+        .text(d => d);
 }
 
 /**
