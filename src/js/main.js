@@ -12,8 +12,6 @@ import { startPeriodicCheck, stopPeriodicCheck, getPeriodicCheckStatus } from ".
 import { checkAuthentication } from "./core/auth.js";
 
 // Parse URL parameters
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
 const selectedMode = DEFAULT_MODE;
 localStorage.setItem("selectedMode", selectedMode);
 

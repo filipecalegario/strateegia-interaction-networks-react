@@ -3,7 +3,7 @@
  * Handles graph visualization and rendering
  */
 
-import { NODE_GROUPS, NODE_COLORS, NODE_SIZES, SIMULATION_CONFIG, DEFAULT_FORCE_PROPERTIES } from "../core/config.js";
+import { NODE_GROUPS, NODE_COLORS, NODE_SIZES, SIMULATION_CONFIG, DEFAULT_FORCE_PROPERTIES, PROJECT_MODE } from "../core/config.js";
 
 // SVG and dimensions
 let svg, g, width, height;
@@ -512,7 +512,7 @@ function ticked() {
  * @param {Array} links - The links data
  * @param {string} mode - The visualization mode
  */
-export function buildGraph(nodes, links, mode = MODE_PROJECT) {
+export function buildGraph(nodes, links, mode = PROJECT_MODE) {
     // Validate input parameters
     if (!nodes || !Array.isArray(nodes)) {
         console.error("Invalid nodes data provided to buildGraph");
@@ -793,13 +793,13 @@ export function saveAsSVG() {
     var source = serializer.serializeToString(svgElement);
 
     // Add name spaces
-    if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+    if (!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)) {
         source = source.replace(
             /^<svg/,
             '<svg xmlns="http://www.w3.org/2000/svg"'
         );
     }
-    if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+    if (!source.match(/^<svg[^>]+"http:\/\/www\.w3\.org\/1999\/xlink"/)) {
         source = source.replace(
             /^<svg/,
             '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'

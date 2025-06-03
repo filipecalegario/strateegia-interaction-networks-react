@@ -4,7 +4,7 @@
  */
 
 import { USER_MODE, PROJECT_MODE, INDICATORS_MODE, BEESWARM_MODE, NODE_GROUPS, NODE_COLORS } from "../core/config.js";
-import { filterByTime, getFilters } from "../data/dataManager.js";
+import { filterByTime } from "../data/dataManager.js";
 import { calculateIndicators } from "../data/statisticsManager.js";
 import { saveAsSVG } from "../visualization/graphRenderer.js";
 

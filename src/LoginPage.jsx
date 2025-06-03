@@ -13,7 +13,7 @@ export default function LoginPage() {
       const token = await auth(username, password);
       localStorage.setItem('strateegiaAccessToken', token);
       navigate('/main');
-    } catch (err) {
+    } catch (_err) {
       alert('Authentication failed');
     }
   };
