@@ -78,6 +78,8 @@ export function saveJson(data) {
 export function displayStatistics(counters, mode) {
     if (mode === USER_MODE || mode === PROJECT_MODE) {
         // Display simple statistics list
+        d3.select("#beeswarm-view").style("display", "none");
+        d3.select("#beeswarm_svg").style("display", "none");
         d3.select("#indicators").style("display", "none");
         d3.select("#stat_list").style("display", "block");
         d3.select("#graph-view").style("display", "block");
@@ -104,6 +106,8 @@ export function displayStatistics(counters, mode) {
         d3.select("#beeswarm_svg").style("display", "block");
     } else if (mode === INDICATORS_MODE) {
         // Display detailed indicators
+        d3.select("#beeswarm-view").style("display", "none");
+        d3.select("#beeswarm_svg").style("display", "none");
         d3.select("#indicators").style("display", "block");
         d3.select("#stat_list").style("display", "none");
         d3.select("#graph-view").style("display", "none");
